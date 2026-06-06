@@ -21,8 +21,10 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI(s => { s.SwaggerEndpoint("/swagger/v1/swagger.json", "Contacts API"); });
 
+app.UseStaticFiles();
 app.UseRouting();
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 app.ApplyMigrations();
 
