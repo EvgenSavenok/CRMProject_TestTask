@@ -1,8 +1,9 @@
+using Contacts.Domain.Constants;
 using Contacts.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Contacts.Infrastrucure.Configurations;
+namespace Contacts.Infrastructure.Configurations;
 
 public class ContactConfiguration : IEntityTypeConfiguration<Contact>
 {
@@ -12,14 +13,14 @@ public class ContactConfiguration : IEntityTypeConfiguration<Contact>
 
         builder.Property(c => c.Name)
             .IsRequired()
-            .HasMaxLength(200);
+            .HasMaxLength(ContactConstants.NameMaxLength);
 
         builder.Property(c => c.MobilePhone)
             .IsRequired()
-            .HasMaxLength(20);
+            .HasMaxLength(ContactConstants.MobilePhoneMaxLength);
 
         builder.Property(c => c.JobTitle)
-            .HasMaxLength(100);
+            .HasMaxLength(ContactConstants.JobTitleMaxLength);
 
         builder.Property(c => c.BirthDate)
             .IsRequired();

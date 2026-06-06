@@ -1,10 +1,11 @@
 using System.Text.Json;
 using Contacts.Domain.ErrorHandlers;
+using Contacts.Infrastructure.Constants;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Contacts.Infrastrucure.Middlewares;
+namespace Contacts.Infrastructure.Middlewares;
 
 public class ExceptionHandlingMiddleware(RequestDelegate next)
 {
@@ -26,8 +27,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next)
         {
             NotFoundException => StatusCodes.Status404NotFound,
             AlreadyExistsException => StatusCodes.Status409Conflict,
-            BadRequestException => StatusCodes.Status400BadRequest,
-            ValidationException => StatusCodes.Status422UnprocessableEntity,
+            BadRequestException or ValidationException => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
         };
 
@@ -37,7 +37,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next)
 
         var details = new ProblemDetails
         {
-            Title = "Error",
+            Title = MiddlewareConstants.ErrorTitle,
             Type = exception.GetType().Name,
             Status = statusCode,
             Detail = detail,
@@ -45,7 +45,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next)
         };
 
         context.Response.StatusCode = statusCode;
-        context.Response.ContentType = "application/json";
+        context.Response.ContentType = MiddlewareConstants.ContentTypeJson;
 
         await context.Response.WriteAsync(JsonSerializer.Serialize(details));
     }

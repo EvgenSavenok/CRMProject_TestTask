@@ -1,7 +1,7 @@
 using Contacts.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Contacts.Infrastrucure.Contexts;
+namespace Contacts.Infrastructure.Contexts;
 
 public class ContactsContext(DbContextOptions<ContactsContext> options) : DbContext(options)
 {

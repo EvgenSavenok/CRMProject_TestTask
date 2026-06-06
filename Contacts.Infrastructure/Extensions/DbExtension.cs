@@ -1,12 +1,12 @@
 using Contacts.Application.Contracts.Repository;
-using Contacts.Infrastrucure.Contexts;
-using Contacts.Infrastrucure.Repositories;
+using Contacts.Infrastructure.Contexts;
+using Contacts.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Contacts.Infrastrucure.Extensions;
+namespace Contacts.Infrastructure.Extensions;
 
 public static class DbExtension
 {

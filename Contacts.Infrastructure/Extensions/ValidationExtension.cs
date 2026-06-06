@@ -3,7 +3,7 @@ using Contacts.Domain.Entities;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Contacts.Infrastrucure.Extensions;
+namespace Contacts.Infrastructure.Extensions;
 
 public static class ValidationExtension
 {

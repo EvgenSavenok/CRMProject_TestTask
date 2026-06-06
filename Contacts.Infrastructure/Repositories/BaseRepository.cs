@@ -1,11 +1,12 @@
 using System.Linq.Expressions;
 using Contacts.Application.Contracts.Repository;
-using Contacts.Infrastrucure.Contexts;
+using Contacts.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace Contacts.Infrastrucure.Repositories;
+namespace Contacts.Infrastructure.Repositories;
 
-public abstract class BaseRepository<T>(ContactsContext context) : IBaseRepository<T>
+public abstract class BaseRepository<T>(ContactsContext context)
+    : IBaseRepository<T>
     where T : class
 {
     public async Task<IEnumerable<T>> FindByConditionAsync(
@@ -13,10 +14,9 @@ public abstract class BaseRepository<T>(ContactsContext context) : IBaseReposito
         CancellationToken cancellationToken,
         params Expression<Func<T, object>>[] includes)
     {
-        IQueryable<T> query = context.Set<T>().Where(expression).AsNoTracking();
+        var query = context.Set<T>().Where(expression).AsNoTracking();
 
-        foreach (var include in includes)
-            query = query.Include(include);
+        query = includes.Aggregate(query, (current, include) => current.Include(include));
 
         return await query.ToListAsync(cancellationToken);
     }
@@ -26,10 +26,9 @@ public abstract class BaseRepository<T>(ContactsContext context) : IBaseReposito
         CancellationToken cancellationToken,
         params Expression<Func<T, object>>[] includes)
     {
-        IQueryable<T> query = context.Set<T>().Where(expression);
+        var query = context.Set<T>().Where(expression);
 
-        foreach (var include in includes)
-            query = query.Include(include);
+        query = includes.Aggregate(query, (current, include) => current.Include(include));
 
         return await query.ToListAsync(cancellationToken);
     }

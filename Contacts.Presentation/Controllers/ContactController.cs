@@ -1,5 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
 using Contacts.Application.DTOs;
 using Contacts.Application.Interfaces.UseCases;
 using Contacts.Application.RequestFeatures;
@@ -9,7 +7,8 @@ namespace Contacts.Presentation.Controllers;
 
 [ApiController]
 [Route("api/contacts")]
-public class ContactController(IContactUseCase contactUseCase) : ControllerBase
+public class ContactController(IContactUseCase contactUseCase)
+    : ControllerBase
 {
     [HttpGet("getAllContacts")]
     public async Task<IActionResult> GetList(

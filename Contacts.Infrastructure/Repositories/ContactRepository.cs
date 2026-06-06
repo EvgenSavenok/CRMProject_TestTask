@@ -1,24 +1,26 @@
 using Contacts.Application.Contracts.Repository;
 using Contacts.Application.RequestFeatures;
 using Contacts.Domain.Entities;
-using Contacts.Infrastrucure.Contexts;
+using Contacts.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace Contacts.Infrastrucure.Repositories;
+namespace Contacts.Infrastructure.Repositories;
 
 public class ContactRepository(ContactsContext context)
     : BaseRepository<Contact>(context), IContactRepository
 {
+    private readonly ContactsContext _context = context;
+
     public async Task<Contact?> GetContactByIdAsync(int contactId, CancellationToken cancellationToken)
     {
-        return await context.Contacts
+        return await _context.Contacts
             .AsNoTracking()
             .FirstOrDefaultAsync(c => c.ContactId == contactId, cancellationToken);
     }
 
     public async Task<Contact?> GetTrackedContactByIdAsync(int contactId, CancellationToken cancellationToken)
     {
-        return await context.Contacts
+        return await _context.Contacts
             .FirstOrDefaultAsync(c => c.ContactId == contactId, cancellationToken);
     }
 
@@ -26,7 +28,7 @@ public class ContactRepository(ContactsContext context)
         ContactQueryParameters parameters,
         CancellationToken cancellationToken)
     {
-        IQueryable<Contact> query = context.Contacts.AsNoTracking();
+        var query = _context.Contacts.AsNoTracking();
 
         var totalCount = await query.CountAsync(cancellationToken);
 

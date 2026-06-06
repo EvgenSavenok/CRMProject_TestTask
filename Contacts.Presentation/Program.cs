@@ -1,9 +1,7 @@
 using Contacts.Application.Interfaces.UseCases;
 using Contacts.Application.UseCases;
-using Contacts.Infrastrucure.Extensions;
-using Contacts.Infrastrucure.Middlewares;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+using Contacts.Infrastructure.Extensions;
+using Contacts.Infrastructure.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,10 +19,7 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseSwagger();
-app.UseSwaggerUI(s =>
-{
-    s.SwaggerEndpoint("/swagger/v1/swagger.json", "Contacts API");
-});
+app.UseSwaggerUI(s => { s.SwaggerEndpoint("/swagger/v1/swagger.json", "Contacts API"); });
 
 app.UseRouting();
 app.MapControllers();
